@@ -1,0 +1,47 @@
+{% extends "farm/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block extra-css %}
+  <style>
+    body
+    {
+      background-image: url('/static/images/register_back.png');
+      background-repeat:no-repeat;
+      padding-top: 300px;
+      background-size:100% 100vh;
+    }
+  </style>
+{%endblock%}
+
+{% block content %}
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('div.hidden').fadeIn(2000).removeClass('hidden');
+  });
+  </script>
+
+
+	<div class = "hidden">
+  	<div style="padding-left: 700px">
+      <div class="content-section">
+        <form method="POST">
+          {% csrf_token %}
+          <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Join Today</legend>
+            {{ form|crispy }}
+          </fieldset>
+          <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Sign Up</button>
+          </div>
+        </form>
+        <div class="border-top pt-3">
+          <small class="text-muted">
+            Already Have An Account? <a class="ml-2" href="{% url 'login-page'%}">Sign In</a>
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

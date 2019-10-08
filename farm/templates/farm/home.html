@@ -1,0 +1,31 @@
+{% extends "farm/base.html"%}
+
+{%block active-tab-home%}
+  <li class="active"><a href="{% url 'app-home'%}">Home</a></li>
+{%endblock%}
+
+
+{%block content%}
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('div.hidden').fadeIn(2000).removeClass('hidden');
+  });
+  </script>
+  <div class = "hidden">
+    <div class="container">
+      <div class="content">
+        <h1 style="color: white" >What do we do?</h1>
+        <br>
+        <p style="font-family: 'Roboto';font-size: 20 px;">
+          We use complex machine learning algorithms to help make farmers make the right decisions using data about soil,
+          weather, market price and many other factors and also give alerts and keep them informed on various relevant
+          things
+        </p>
+        <br>
+        <a href="{% url 'app-about'%}" class="btn btn-info" role="button" style="background-color: rgb(139, 197, 66);">Learn More</a>
+      </div>
+    </div>
+  </div>
+
+{%endblock%}

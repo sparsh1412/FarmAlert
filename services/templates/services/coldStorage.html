@@ -1,0 +1,148 @@
+{% extends "farm/base.html"%}
+
+{% block style-google-maps %}
+
+  <style>
+    /* Set the size of the div element that contains the map */
+    #map
+    {
+      height: 750px;  /* The height is 400 pixels */
+      width: 80%;  /* The width is the width of the web page */
+      margin-top:150px;
+      margin-left:-150px;
+    }
+
+    body
+    {
+      background-image: url('/static/images/bg.jpg');
+      background-repeat:repeat;
+    /*  padding-top: 300px;*/
+      background-size:100% 100vh;
+    }
+  </style>
+
+{% endblock %}
+
+
+{% block content %}
+
+    <!--The div element for the map -->
+
+<script type="text/javascript">
+    $(document).ready(function () {
+      $('div.hidden').fadeIn(2000).removeClass('hidden');
+  });
+  </script>
+
+
+  <!--Load the API from the specified URL
+  * The async attribute allows the browser to render the page while the API loads
+  * The key parameter will contain your own API key (which is not needed for this tutorial)
+  * The callback parameter executes the initMap() function
+  -->
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key={{API_KEY}}&callback=myMap">
+  </script>
+
+  <div class="row">
+  <div class="col-sm-6">
+    <div class="container">
+    <div id="map"></div>
+
+
+  <script>
+    // Initialize and add the map
+    function myMap()
+    {
+
+      var myLatLng = {lat: 30.354907299999997, lng:76.3677192};
+
+      var mapProp= {
+            center:myLatLng,
+            zoom:12,
+          };
+
+      var map = new google.maps.Map(document.getElementById('map'), mapProp);
+
+      var marker = new google.maps.Marker({
+        position: myLatLng,
+
+        map: map,
+        animation:google.maps.Animation.DROP
+      });
+
+      function addMarker(location,name) {
+        marker = new google.maps.Marker({
+            position: location,
+             icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                strokeColor: "green",
+                labelOrigin: new google.maps.Point(0,-3),
+                scale: 10,
+                strokeOpacity : 1,
+            },
+            label: {
+              text : name,
+              fontFamily : 'Roboto',
+              fontWeight : "bold",
+              fontSize: "16px",
+            },
+            map: map,
+            
+            animation:google.maps.Animation.BOUNCE
+        });
+    }
+
+    // Testing the addMarker function
+   
+      //  var markLatLng = {lat : 30.3,lng : 76.2};
+      //   var mark = new google.maps.Marker({
+      //   position: markLatLng,
+      //   map: map,
+      //   animation:google.maps.Animation.BOUNCE
+      // });
+      var latInfo = {{lat_info|safe}};
+      var lngInfo = {{lng_info|safe}};
+    
+      var place_name = {{names|safe}};
+      var arrayLength = latInfo.length;
+      for (var i = 0; i < arrayLength; i++) {
+           CentralPark = new google.maps.LatLng(latInfo[i],lngInfo[i]);
+           addMarker(CentralPark,place_name[i]);
+        }
+       
+    // //Do something
+    //   }
+
+      // {% for lati,lngi in coldStorage_latlng %}
+
+      //   myLatLng = {lat: lati, lng: lngi}
+
+      //   marker = new google.maps.Marker({
+      //     position: myLatLng,
+      //     map: map,
+      //     animation:google.maps.Animation.BOUNCE
+      //   });
+      // {% endfor %}
+
+    }
+  </script>
+</div>
+
+  </div>
+  <div class="col-sm-6">
+    <div class = "hidden">
+<div class ="ex1 container" style="width :400px; margin-top: 120px">
+    <h1 style="color: orange ;font-size:34px;text-align:center;font-family: 'Special Elite', cursive;"> Cold Storages Near You </h1>
+    <br>
+    {% for name, rating in place_info %}
+        <h2 style="font-family: 'Patua-One';color: rgb(255, 255, 255);font-size: 22px;font-weight: bold"> {{name}} </h2>
+        <p style="color: rgb(51, 204, 255); font-size:20px;font-weight: bold"><i> Rating : {{rating}} </i></p>
+        <br>
+    {% endfor %}
+</div>
+</div>
+  </div>
+</div>
+
+{% endblock %}

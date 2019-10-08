@@ -1,0 +1,15 @@
+{% extends "farm/base.html" %}
+
+{% block active-tab-profile %}
+  <li class="active"><a href="{% url 'profile-page' %}">Profile</a></li>
+{% endblock %}
+
+{% block content %}
+
+  <div style="padding-left: 700px">
+    <div class="content-section">
+      <h1>{{ user.username }}</h1>
+    </div>
+  </div>
+
+{% endblock %}

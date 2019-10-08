@@ -1,0 +1,65 @@
+{% extends "farm/base.html"%}
+
+
+
+{%block active-tab-services%}
+    <li class="active"><a href="{% url 'farm-services' %}">Services</a></li>
+{%endblock%}
+
+
+{% block extra-css %}
+<style>
+body
+{
+  background-image: url('/static/images/serv.jpeg');
+  background-repeat:no-repeat;
+/*  padding-top: 300px;*/
+  background-size:100% 100vh;
+}
+</style>
+
+{% endblock %}
+
+{%block content%}
+
+ <script type="text/javascript">
+    $(document).ready(function () {
+      $('div.hidden').fadeIn(2000).removeClass('hidden');
+  });
+  </script>
+
+<div class = "hidden">
+<div class="col-md-12" style="margin-top: 180px;margin-right: -60px;font-family: 'Roboto'">
+    <div class="col-sm-4">
+        <div class="container">
+            <div class="card" style="width:350px;">
+            <img class="card-img-top" src="/static/images/alert.png" alt="Card image" style="width:100%">
+            <div class="card-body">
+              <h4 class="card-title"><b>Government Alerts</b></h4>
+              <p class="card-text">Get latest schemes announced by the government and see how you can benefit from them</p>
+              <a href="{% url 'govt-alerts' %}" class="btn btn-primary stretched-link">Get Alerts!</a>
+            </div>
+          </div>
+    
+
+        </div>
+     </div>
+     <div class="col-sm-4">
+        <div class="container">
+
+            <div class="card" style="width:350px">
+            <img class="card-img-top" src="/static/images/colds.png" alt="Card image" style="width:100%">
+            <div class="card-body">
+              <h4 class="card-title"><b>Cold Storage Locator</b></h4>
+              <p class="card-text">Find all nearby cold storages and get their info in an instant</p>
+              <a href="{% url 'cold-storages' %}" class="btn btn-primary stretched-link">Locate Cold Storages!</a>
+            </div>
+          </div>
+        
+        </div>
+     </div>
+      
+
+</div>
+</div>
+{%endblock%}
