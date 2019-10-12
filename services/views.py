@@ -15,7 +15,9 @@ import json as simplejson
 def serve(request):
     return render(request, 'services/farmServices.html')
 
-
+@login_required
+def CropRecommender(request):
+    return render(request,'services/crop.html')
 def webScaper(govt_alert_url):
 
     # make connection, grab the page
