@@ -21,7 +21,6 @@ def CropRecommender(request):
     if request.method == 'POST':
         form = SoilForm(request.POST)
         if form.is_valid():
-            form.save()
             Ph = form.cleaned_data.get('Ph')
             Nitrogen = form.cleaned_data.get('Nitrogen')
             Phosphorus = form.cleaned_data.get('Phosphorus')
@@ -84,7 +83,7 @@ def getLocation():
 @login_required
 def cold_storages(request):
 
-    
+
 
     API_KEY = "AIzaSyAIQUn1veJPYzWb-wAwu33-xOvCd05ZXHM"
     latlng = getLocation()
@@ -111,7 +110,7 @@ def cold_storages(request):
         lat_i.append((place['geometry']['location']['lat']))
         lng_i.append((place['geometry']['location']['lng']))
         name_array.append(place['name'])
-     
+
     # lat_info = simplejson.dumps(lat_i)
     # lng_info = simplejson.dumps(lng_i)
 
