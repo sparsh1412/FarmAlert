@@ -8,6 +8,7 @@ from googleplaces import GooglePlaces, types, lang
 import googlemaps
 import json as simplejson
 from services.forms import SoilForm
+import pandas as pd
 
 # Create your views here.
 
@@ -15,6 +16,7 @@ from services.forms import SoilForm
 @login_required
 def serve(request):
     return render(request, 'services/farmServices.html')
+
 
 @login_required
 def CropRecommender(request):
@@ -27,11 +29,12 @@ def CropRecommender(request):
             Pottasium = form.cleaned_data.get('Pottasium')
             Temprature = form.cleaned_data.get('Temprature')
 
-            print(Ph,Nitrogen,Phosphorus,Pottasium,Temprature)
+            print(Ph, Nitrogen, Phosphorus, Pottasium, Temprature)
 
     form = SoilForm()
 
-    return render(request,'services/crop.html',{'form' : form})
+    return render(request, 'services/crop.html', {'form': form})
+
 
 def webScaper(govt_alert_url):
 
@@ -83,8 +86,6 @@ def getLocation():
 @login_required
 def cold_storages(request):
 
-
-
     API_KEY = "AIzaSyAIQUn1veJPYzWb-wAwu33-xOvCd05ZXHM"
     latlng = getLocation()
 
@@ -93,10 +94,10 @@ def cold_storages(request):
 
     google_places = GooglePlaces(API_KEY)
 
-    gmaps = googlemaps.Client(key = API_KEY)
+    gmaps = googlemaps.Client(key=API_KEY)
     google_places = GooglePlaces(API_KEY)
     query_result = gmaps.places_nearby(
-        location = '30.354907299999997,76.3677192',
+        location='30.354907299999997,76.3677192',
         keyword='Coldstorage',
         radius=150000,
     )
@@ -106,7 +107,7 @@ def cold_storages(request):
     lng_i = []
     name_array = []
     for place in query_result['results']:
-        place_info.append((place['name'],place['rating']))
+        place_info.append((place['name'], place['rating']))
         lat_i.append((place['geometry']['location']['lat']))
         lng_i.append((place['geometry']['location']['lng']))
         name_array.append(place['name'])
@@ -117,9 +118,35 @@ def cold_storages(request):
     context = {
         "API_KEY": API_KEY,
         "place_info": place_info,
-        "lat_info" : lat_i,
-        "lng_info" : lng_i,
-        "names" : name_array,
+        "lat_info": lat_i,
+        "lng_info": lng_i,
+        "names": name_array,
     }
 
     return render(request, 'services/coldStorage.html', context)
+
+
+commonPath = r"C:\Users\Sparsh Jain\Desktop\Capstone\final_app\farm\static\dataset\\"
+
+
+def createDataset(commonPath):
+
+    # reading the csv files of all the crops
+    maize = pd.read_csv(commonPath + "Maize.csv", delimiter=",")
+    sugarcane = pd.read_csv(commonPath + "Sugarcane.csv", delimiter=",")
+    barley = pd.read_csv(commonPath + "Barley.csv", delimiter=",")
+    rice = pd.read_csv(commonPath + "Rice.csv", delimiter=",")
+    wheat = pd.read_csv(commonPath + "Wheat.csv", delimiter=",")
+
+    # adding a label to every datapoint
+    maize["Target"] = 0
+    sugarcane["Target"] = 1
+    barley["Target"] = 2
+    rice["Target"] = 3
+    wheat["Target"] = 4
+
+    # concatenating all the crops to form a single dataset
+    finalDataset = pd.concat([maize, sugarcane, barley, rice, wheat], axis=0)
+
+    # creating the final dataset as a csv file to the "commonPath" specified
+    finalDataset.to_csv(commonPath + "FinalDataset.csv", index=False)
