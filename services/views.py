@@ -7,6 +7,7 @@ import geocoder
 from googleplaces import GooglePlaces, types, lang
 import googlemaps
 import json as simplejson
+from services.forms import SoilForm
 
 # Create your views here.
 
@@ -17,7 +18,22 @@ def serve(request):
 
 @login_required
 def CropRecommender(request):
-    return render(request,'services/crop.html')
+    if request.method == 'POST':
+        form = SoilForm(request.POST)
+        if form.is_valid():
+            form.save()
+            Ph = form.cleaned_data.get('Ph')
+            Nitrogen = form.cleaned_data.get('Nitrogen')
+            Phosphorus = form.cleaned_data.get('Phosphorus')
+            Pottasium = form.cleaned_data.get('Pottasium')
+            Temprature = form.cleaned_data.get('Temprature')
+
+            print(Ph,Nitrogen,Phosphorus,Pottasium,Temprature)
+
+    form = SoilForm()
+
+    return render(request,'services/crop.html',{'form' : form})
+
 def webScaper(govt_alert_url):
 
     # make connection, grab the page
@@ -63,10 +79,6 @@ def govt_alert(request):
 def getLocation():
     g = geocoder.ip('me')
     return g.latlng
-
-
-def populateMapWithMarkers():
-    pass
 
 
 @login_required
