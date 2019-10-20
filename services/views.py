@@ -9,6 +9,7 @@ import googlemaps
 import json as simplejson
 from services.forms import SoilForm
 import pandas as pd
+from sklearn.externals import joblib 
 
 # Create your views here.
 
@@ -29,12 +30,30 @@ def CropRecommender(request):
             Pottasium = form.cleaned_data.get('Pottasium')
             Temprature = form.cleaned_data.get('Temprature')
 
-            print(Ph, Nitrogen, Phosphorus, Pottasium, Temprature)
+            ClassNames = ["Maize","Sugarcane","Barley","Rice","Wheat"]
+
+            LoadModelNB = joblib.load('D:\Projects\Captone 13 oct\FarmAlert\services\\NBCapstone.pkl')
+            LoadModelDecisonTree = joblib.load('D:\Projects\Captone 13 oct\FarmAlert\services\\DTCapstone.pkl')
+            LoadModelKNN = joblib.load('D:\Projects\Captone 13 oct\FarmAlert\services\\knn.pkl')
+
+            Input = [[Ph,Nitrogen,Phosphorus,Pottasium,Temprature],]
+
+            PredNB = LoadModelNB.predict(Input)
+            PredDT = LoadModelDecisonTree.predict(Input)
+            PredKNN = LoadModelKNN.predict(Input)
+
+            # Write Majority voting code
+            
+
+            Context = {"Result" : ClassNames[PredNB[0]]}
+            return render(request,'services/recommendation.html',Context)
 
     form = SoilForm()
+    return render(request, 'services/crop.html', {'form':form})
 
-    return render(request, 'services/crop.html', {'form': form})
-
+@login_required
+def Recommendation(request):
+    return render(request,'services/recommendation.html')
 
 def webScaper(govt_alert_url):
 
