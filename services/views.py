@@ -10,11 +10,6 @@ import json as simplejson
 from services.forms import SoilForm
 import pandas as pd
 from sklearn.externals import joblib 
-import numpy as np
-import tensorflow as tf
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.preprocessing import OneHotEncoder 
 
 # Create your views here.
 
@@ -23,10 +18,29 @@ from sklearn.preprocessing import OneHotEncoder
 def serve(request):
     return render(request, 'services/farmServices.html')
 
+def PredNN(Input):
+    import numpy as np
+    import pandas as pd
+    import tensorflow as tf
+    from sklearn.model_selection import train_test_split
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.preprocessing import OneHotEncoder 
 
-def NNPred(Input):
 
-    dataset = pd.read_csv("D:\\Projects\\Captone 13 oct\\FarmAlert\\farm\\static\\dataset\\FinalDataset.csv")
+    # In[2]:
+
+
+    commonPath = r"C:\Users\Sparsh Jain\Desktop\Capstone\final_app\farm\static\dataset\\"
+
+
+    # In[3]:
+
+
+    dataset = pd.read_csv(commonPath + "FinalDataset.csv")
+
+
+    # In[4]:
+
 
     dataset_x = dataset.iloc[:,:-1]
     dataset_y = dataset.iloc[:, -1]
@@ -34,13 +48,89 @@ def NNPred(Input):
     dataset_x = np.array(dataset_x)
     dataset_y = np.array(dataset_y).reshape(-1,1)
 
+
+    # In[5]:
+
+
+    dataset_x.shape, dataset_y.shape
+
+
+    # In[6]:
+
+
+    dataset_x
+
+
+    # In[7]:
+
+
+    dataset_y
+
+
+    # In[8]:
+
+
     onehotencoder = OneHotEncoder()
     dataset_y = onehotencoder.fit_transform(dataset_y).toarray()
 
+
+    # In[9]:
+
+
+    dataset_y
+
+
+    # In[10]:
+
+
     x_train, x_test, y_train, y_test = train_test_split(dataset_x, dataset_y, test_size = 0.2, random_state = 100, shuffle = True)
+
+
+    # In[11]:
+
+
+    x_train.shape, x_test.shape, y_train.shape, y_test.shape
+
+
+    # In[12]:
+
+
+    type(x_train), type(x_test), type(y_train), type(y_test)
+
+
+    # In[13]:
+
+
+    x_train
+
+
+    # In[14]:
+
+
+    y_train
+
+
+    # In[15]:
+
+
+    x_test
+
+
+    # In[16]:
+
+
+    y_test
+
+
+    # In[17]:
+
 
     scaler = StandardScaler()
     x_train = scaler.fit_transform(x_train)
+
+
+    # In[18]:
+
 
     n_input = 5;
     n_hidden_1 = 32
@@ -48,16 +138,20 @@ def NNPred(Input):
     n_out = 5
 
     weights = {
-        "h1" : tf.Variable(tf.random.normal([n_input, n_hidden_1], seed=100)),
-        "h2" : tf.Variable(tf.random.normal([n_hidden_1, n_hidden_2], seed=100)),
-        "out" :  tf.Variable(tf.random.normal([n_hidden_2, n_out], seed=100))
+        "h1" : tf.Variable(tf.random_normal([n_input, n_hidden_1], seed=100)),
+        "h2" : tf.Variable(tf.random_normal([n_hidden_1, n_hidden_2], seed=100)),
+        "out" :  tf.Variable(tf.random_normal([n_hidden_2, n_out], seed=100))
     }
 
     biases = {
-        "h1" : tf.Variable(tf.random.normal([n_hidden_1], seed=100)),
-        "h2" : tf.Variable(tf.random.normal([n_hidden_2], seed=100)),
-        "out" :  tf.Variable(tf.random.normal([n_out], seed=100))
+        "h1" : tf.Variable(tf.random_normal([n_hidden_1], seed=100)),
+        "h2" : tf.Variable(tf.random_normal([n_hidden_2], seed=100)),
+        "out" :  tf.Variable(tf.random_normal([n_out], seed=100))
     }
+
+
+    # In[19]:
+
 
     def forward_propagation(x_train, weights, biases):
         in_layer1 = tf.add(tf.matmul(x_train, weights['h1']), biases['h1'])
@@ -69,17 +163,37 @@ def NNPred(Input):
         output = tf.add(tf.matmul(out_layer2, weights['out']), biases['out'])
         return output    
 
-    x = tf.placeholder(tf.float32, [None, n_input])
+
+    # In[20]:
+
+
+    x = tf.placeholder("float", [None, n_input])
     y = tf.placeholder(tf.int32, [None, n_out])
     pred = forward_propagation(x, weights, biases)
 
+
+    # In[21]:
+
+
     cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits = pred, labels = y))
+
+
+    # In[22]:
+
 
     optimizer = tf.train.AdamOptimizer(learning_rate=0.01)
     optimize = optimizer.minimize(cost)
 
+
+    # In[23]:
+
+
     sess = tf.Session()
     sess.run(tf.global_variables_initializer())
+
+
+    # In[24]:
+
 
     num_itr = 10000
 
@@ -91,17 +205,35 @@ def NNPred(Input):
             break
             
 
+
+    # In[25]:
+
+
+    saver = tf.train.Saver()
+    path_saved = saver.save(sess, r"C:\Users\Sparsh Jain\Desktop\Temp\weights.ckpt")
+
+
+    # In[26]:
+
+
+    path_saved
+
+
+    # In[27]:
+
+
     x_test = scaler.transform(x_test)
+
+
+    # In[34]:
 
 
     predictions = tf.argmax(pred, 1)
     correct_labels = tf.argmax(y, 1)
     correct_predictions = tf.equal(predictions, correct_labels)
     predictions_eval, correct_predictions = sess.run([predictions, correct_predictions], 
-                                                      feed_dict = {x :Input , y : y_test})
-
+                                                      feed_dict = {x : x_test, y : y_test})
     return predictions_eval
-
 
 @login_required
 def CropRecommender(request):
@@ -125,19 +257,17 @@ def CropRecommender(request):
             PredNB = LoadModelNB.predict(Input)
             PredDT = LoadModelDecisonTree.predict(Input)
             PredKNN = LoadModelKNN.predict(Input)
-            PredNN = NNPred(Input)
-
+            PredNN = predNN(Input)
             # Write Majority voting code
 
             MajorityVote = {0:0,1:0,2:0,3:0,4:0}
 
-            print(PredNB[0],PredDT[0],PredKNN[0],PredNN)
+            print(PredNB[0],PredDT[0],PredKNN[0],PredNN[0])
+            
             MajorityVote[PredNB[0]] += 1
             MajorityVote[PredDT[0]] += 1
             MajorityVote[PredKNN[0]] += 1
-            MajorityVote[PredNN] += 1
-
-            
+            MajorityVote[PredNN[0]] += 1
 
             maxCountIndex = 0
             maxCount = 0
@@ -149,7 +279,7 @@ def CropRecommender(request):
                     maxCountIndex = crop
 
 
-            if maxCount < 2:
+            if maxCount < 3:
                 maxCountIndex = 5
 
 
@@ -256,7 +386,6 @@ def cold_storages(request):
     return render(request, 'services/coldStorage.html', context)
 
 
-commonPath = r"C:\Users\Sparsh Jain\Desktop\Capstone\final_app\farm\static\dataset\\"
 
 
 def createDataset(commonPath):
@@ -280,3 +409,7 @@ def createDataset(commonPath):
 
     # creating the final dataset as a csv file to the "commonPath" specified
     finalDataset.to_csv(commonPath + "FinalDataset.csv", index=False)
+
+def predNN(Input):
+    LoadModelNB1 = joblib.load('D:\\Projects\\Captone 13 oct\\FarmAlert\\services\\NBCapstone.pkl')
+    return LoadModelNB1.predict(Input)
