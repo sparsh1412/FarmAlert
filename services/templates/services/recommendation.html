@@ -22,13 +22,75 @@
     <h1 style="color: rgb(51, 51, 255) ;font-weight: bold; font-size:33px;text-align:center;font-family: 'Special Elite', cursive;margin-top: 50px;">
       The Recommended Crop for your soil is <i style="color: rgb(255,0,0) ; font-size:33px;text-align:center;font-family: 'Roboto', cursive;">{{Result}}</i></h1>
 
+     {% if Result == "Rice" %}
       <img class="center" src="/static/images/rice.jpg" style="width:70%;margin-left: 100px;margin-top: 40px;">
-      <br>
-      <br>
-      <br>
-      <p style="font-family: 'Patua+One';font-size:27px;font-weight: bold; color: rgb(153, 51, 0)">Current Market Price : 9500/QTL</p>
-      <p style="font-family: 'Patua+One';font-size:24px;">Rice is the most important food crop of India covering about one-fourth of the total cropped area and providing food to about half of the Indian population. Punjab has made tremendous progress in rice productivity and production during the past 45 years. Due to use of high yielding varieties and new technology Punjab has given the title of "Rice Bowl of India".</p>
+          <br>
+          <br>
+          <br>
+          <p style="font-family: 'Patua+One';font-size:22px;">Rice is the most important food crop of India covering about one-fourth of the total cropped area and providing food to about half of the Indian population. Punjab has made tremendous progress in rice productivity and production during the past 45 years. Due to use of high yielding varieties and new technology Punjab has given the title of Rice Bowl of India.","Maize":"Maize can play important role in crop diversification policy of the state. It is used in poultry and animal feed and for the manufacture of starch, glucose, corn flakes. It is also used as a human food (Makki di roti) in winter season as a special delicious recipe in combination with Sarson ka-sag. Baby corn is eaten as Salad and used for cooking vegetables and preparing pickles, pakoras, soups, etc.</p>
+
+
+
+      {% elif Result == "Wheat" %}
+
+      <img class="center" src="/static/images/Wheat.jpg" style="width:70%;margin-left: 100px;margin-top: 40px;">
+          <br>
+          <br>
+          <br>
+          <p style="font-family: 'Patua+One';font-size:22px;">Wheat is grown on 13 percent of the cropped area of India. Next to rice, wheat is the most important food-grain of India and is the staple food of millions of Indians, particularly in the northern and north-western parts of the country. </p>
+
+      {% elif Result == "Barley" %}
+
+       <img class="center" src="/static/images/Barley.jpg" style="width:70%;margin-left: 100px;margin-top: 40px;">
+          <br>
+          <br>
+          <br>
+          <p style="font-family: 'Patua+One';font-size:22px;">Barley (Hordeum vulgare L.) is generally called “Jau”. It is quite significant cereal after wheat, maize & rice. Barley is cultivated in summer season in temperate area while it is sown in winter seasons in tropical zones. In India it is planted in rabi season. It possesses excellent drought resistance capacity.</p>
+
+      {% elif Result == "Maize" %}
+
+        <img class="center" src="/static/images/Maize.jpg" style="width:70%;margin-left: 100px;margin-top: 40px;">
+          <br>
+          <br>
+          <br>
+           
+          <p style="font-family: 'Patua+One';font-size:22px;">
+             Maize can play important role in crop diversification policy of the state. It is used in poultry and animal feed and for the manufacture of starch, glucose, corn flakes. It is also used as a human food (Makki di roti) in winter season as a special delicious recipe in combination with Sarson ka-sag. Baby corn is eaten as Salad and used for cooking vegetables and preparing pickles, pakoras, soups, etc
+          </p>
+
+      {% elif Result == "None"%}
+
+         <img class="center" src="/static/images/NoResult.jpg" style="width:70%;margin-left: 100px;margin-top: 40px;height: 350px">
+          <br>
+          <br>
+          <br>
+           
+          <p style="font-family: 'Patua+One';font-size:22px;">
+           The soil is not suitable for growth of the listed crops
+          </p>
+
+      {%else%}
+
+      <img class="center" src="/static/images/Sugarcane.jpg" style="width:70%;margin-left: 100px;margin-top: 40px;">
+          <br>
+          <br>
+          <br>
+          <p style="font-family: 'Patua+One';font-size:22px;">Sugarcane, Saccharum officinarum L. is a perennial gras. It belongs to bamboo family and it is indigenous to India. It is the main source of sugar, jaggery and khandsari. About two-thirds of the total sugarcane produced in India is consumed for making jaggery and khandsari and only one third of it goes to sugar factories. It also provides raw material for manufacturing alcohol.</p>
+
+     {%endif%}
+
+
+
+
   </div>
 </div>
 </div>
 {%endblock%}
+
+
+
+<img class="center" src="/static/images/rice.jpg" style="width:70%;margin-left: 100px;margin-top: 40px;">
+          <br>
+          <br>
+          <br>
+          <p style="font-family: 'Patua+One';font-size:24px;">Dict[key]</p>

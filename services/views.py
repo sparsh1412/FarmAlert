@@ -10,6 +10,11 @@ import json as simplejson
 from services.forms import SoilForm
 import pandas as pd
 from sklearn.externals import joblib 
+import numpy as np
+import tensorflow as tf
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import OneHotEncoder 
 
 # Create your views here.
 
@@ -17,6 +22,85 @@ from sklearn.externals import joblib
 @login_required
 def serve(request):
     return render(request, 'services/farmServices.html')
+
+
+def NNPred(Input):
+
+    dataset = pd.read_csv("D:\\Projects\\Captone 13 oct\\FarmAlert\\farm\\static\\dataset\\FinalDataset.csv")
+
+    dataset_x = dataset.iloc[:,:-1]
+    dataset_y = dataset.iloc[:, -1]
+
+    dataset_x = np.array(dataset_x)
+    dataset_y = np.array(dataset_y).reshape(-1,1)
+
+    onehotencoder = OneHotEncoder()
+    dataset_y = onehotencoder.fit_transform(dataset_y).toarray()
+
+    x_train, x_test, y_train, y_test = train_test_split(dataset_x, dataset_y, test_size = 0.2, random_state = 100, shuffle = True)
+
+    scaler = StandardScaler()
+    x_train = scaler.fit_transform(x_train)
+
+    n_input = 5;
+    n_hidden_1 = 32
+    n_hidden_2 = 64
+    n_out = 5
+
+    weights = {
+        "h1" : tf.Variable(tf.random.normal([n_input, n_hidden_1], seed=100)),
+        "h2" : tf.Variable(tf.random.normal([n_hidden_1, n_hidden_2], seed=100)),
+        "out" :  tf.Variable(tf.random.normal([n_hidden_2, n_out], seed=100))
+    }
+
+    biases = {
+        "h1" : tf.Variable(tf.random.normal([n_hidden_1], seed=100)),
+        "h2" : tf.Variable(tf.random.normal([n_hidden_2], seed=100)),
+        "out" :  tf.Variable(tf.random.normal([n_out], seed=100))
+    }
+
+    def forward_propagation(x_train, weights, biases):
+        in_layer1 = tf.add(tf.matmul(x_train, weights['h1']), biases['h1'])
+        out_layer1 = tf.nn.relu(in_layer1)
+        
+        in_layer2 = tf.add(tf.matmul(out_layer1, weights['h2']), biases['h2'])
+        out_layer2 = tf.nn.relu(in_layer2)
+        
+        output = tf.add(tf.matmul(out_layer2, weights['out']), biases['out'])
+        return output    
+
+    x = tf.placeholder(tf.float32, [None, n_input])
+    y = tf.placeholder(tf.int32, [None, n_out])
+    pred = forward_propagation(x, weights, biases)
+
+    cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits = pred, labels = y))
+
+    optimizer = tf.train.AdamOptimizer(learning_rate=0.01)
+    optimize = optimizer.minimize(cost)
+
+    sess = tf.Session()
+    sess.run(tf.global_variables_initializer())
+
+    num_itr = 10000
+
+    for i in range(num_itr):
+        c, _ = sess.run([cost, optimize], feed_dict = {x : x_train, y : y_train})
+        print(i, " : ", c)
+        
+        if c <0.5:
+            break
+            
+
+    x_test = scaler.transform(x_test)
+
+
+    predictions = tf.argmax(pred, 1)
+    correct_labels = tf.argmax(y, 1)
+    correct_predictions = tf.equal(predictions, correct_labels)
+    predictions_eval, correct_predictions = sess.run([predictions, correct_predictions], 
+                                                      feed_dict = {x :Input , y : y_test})
+
+    return predictions_eval
 
 
 @login_required
@@ -30,22 +114,49 @@ def CropRecommender(request):
             Pottasium = form.cleaned_data.get('Pottasium')
             Temprature = form.cleaned_data.get('Temprature')
 
-            ClassNames = ["Maize","Sugarcane","Barley","Rice","Wheat"]
+            ClassNames = ["Maize","Sugarcane","Barley","Rice","Wheat","None"]
 
-            LoadModelNB = joblib.load('D:\Projects\Captone 13 oct\FarmAlert\services\\NBCapstone.pkl')
-            LoadModelDecisonTree = joblib.load('D:\Projects\Captone 13 oct\FarmAlert\services\\DTCapstone.pkl')
-            LoadModelKNN = joblib.load('D:\Projects\Captone 13 oct\FarmAlert\services\\knn.pkl')
+            LoadModelNB = joblib.load('D:\\Projects\\Captone 13 oct\\FarmAlert\\services\\NBCapstone.pkl')
+            LoadModelDecisonTree = joblib.load('D:\\Projects\\Captone 13 oct\\FarmAlert\\services\\DTCapstone.pkl')
+            LoadModelKNN = joblib.load('D:\\Projects\\Captone 13 oct\\FarmAlert\\services\\KNNCapstone.pkl')
 
-            Input = [[Ph,Nitrogen,Phosphorus,Pottasium,Temprature],]
+            Input = [[Temprature,Ph,Nitrogen,Phosphorus,Pottasium],]
 
             PredNB = LoadModelNB.predict(Input)
             PredDT = LoadModelDecisonTree.predict(Input)
             PredKNN = LoadModelKNN.predict(Input)
+            PredNN = NNPred(Input)
 
             # Write Majority voting code
+
+            MajorityVote = {0:0,1:0,2:0,3:0,4:0}
+
+            print(PredNB[0],PredDT[0],PredKNN[0],PredNN)
+            MajorityVote[PredNB[0]] += 1
+            MajorityVote[PredDT[0]] += 1
+            MajorityVote[PredKNN[0]] += 1
+            MajorityVote[PredNN] += 1
+
             
 
-            Context = {"Result" : ClassNames[PredNB[0]]}
+            maxCountIndex = 0
+            maxCount = 0
+
+            for crop,count in MajorityVote.items():
+                print(crop,count)
+                if count >= maxCount:
+                    maxCount = count
+                    maxCountIndex = crop
+
+
+            if maxCount < 2:
+                maxCountIndex = 5
+
+
+
+            Context = {"Result" : ClassNames[maxCountIndex],
+            }
+
             return render(request,'services/recommendation.html',Context)
 
     form = SoilForm()
