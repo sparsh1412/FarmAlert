@@ -7,9 +7,21 @@ import geocoder
 from googleplaces import GooglePlaces, types, lang
 import googlemaps
 import json as simplejson
-from services.forms import SoilForm
+from services.forms import SoilForm,YieldForm
 import pandas as pd
 from sklearn.externals import joblib 
+from services.GetCropDataPoint import getCropDataPoint
+from keras.models import load_model
+from keras.wrappers.scikit_learn import KerasRegressor
+import keras
+import pandas as pd
+import numpy as np
+import sklearn
+import random
+from sklearn.model_selection import train_test_split
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.wrappers.scikit_learn import KerasRegressor
 
 # Create your views here.
 
@@ -18,222 +30,38 @@ from sklearn.externals import joblib
 def serve(request):
     return render(request, 'services/farmServices.html')
 
-def PredNN(Input):
-    import numpy as np
-    import pandas as pd
-    import tensorflow as tf
-    from sklearn.model_selection import train_test_split
-    from sklearn.preprocessing import StandardScaler
-    from sklearn.preprocessing import OneHotEncoder 
-
-
-    # In[2]:
-
-
-    commonPath = r"C:\Users\Sparsh Jain\Desktop\Capstone\final_app\farm\static\dataset\\"
-
-
-    # In[3]:
-
-
-    dataset = pd.read_csv(commonPath + "FinalDataset.csv")
-
-
-    # In[4]:
-
-
-    dataset_x = dataset.iloc[:,:-1]
-    dataset_y = dataset.iloc[:, -1]
-
-    dataset_x = np.array(dataset_x)
-    dataset_y = np.array(dataset_y).reshape(-1,1)
-
-
-    # In[5]:
-
-
-    dataset_x.shape, dataset_y.shape
-
-
-    # In[6]:
-
-
-    dataset_x
-
-
-    # In[7]:
-
-
-    dataset_y
-
-
-    # In[8]:
-
-
-    onehotencoder = OneHotEncoder()
-    dataset_y = onehotencoder.fit_transform(dataset_y).toarray()
-
-
-    # In[9]:
-
-
-    dataset_y
-
-
-    # In[10]:
-
-
-    x_train, x_test, y_train, y_test = train_test_split(dataset_x, dataset_y, test_size = 0.2, random_state = 100, shuffle = True)
-
-
-    # In[11]:
-
-
-    x_train.shape, x_test.shape, y_train.shape, y_test.shape
-
-
-    # In[12]:
-
-
-    type(x_train), type(x_test), type(y_train), type(y_test)
-
-
-    # In[13]:
-
-
-    x_train
-
-
-    # In[14]:
-
-
-    y_train
-
-
-    # In[15]:
-
-
-    x_test
-
-
-    # In[16]:
-
-
-    y_test
-
-
-    # In[17]:
-
-
-    scaler = StandardScaler()
-    x_train = scaler.fit_transform(x_train)
-
-
-    # In[18]:
-
-
-    n_input = 5;
-    n_hidden_1 = 32
-    n_hidden_2 = 64
-    n_out = 5
-
-    weights = {
-        "h1" : tf.Variable(tf.random_normal([n_input, n_hidden_1], seed=100)),
-        "h2" : tf.Variable(tf.random_normal([n_hidden_1, n_hidden_2], seed=100)),
-        "out" :  tf.Variable(tf.random_normal([n_hidden_2, n_out], seed=100))
-    }
-
-    biases = {
-        "h1" : tf.Variable(tf.random_normal([n_hidden_1], seed=100)),
-        "h2" : tf.Variable(tf.random_normal([n_hidden_2], seed=100)),
-        "out" :  tf.Variable(tf.random_normal([n_out], seed=100))
-    }
-
-
-    # In[19]:
-
-
-    def forward_propagation(x_train, weights, biases):
-        in_layer1 = tf.add(tf.matmul(x_train, weights['h1']), biases['h1'])
-        out_layer1 = tf.nn.relu(in_layer1)
-        
-        in_layer2 = tf.add(tf.matmul(out_layer1, weights['h2']), biases['h2'])
-        out_layer2 = tf.nn.relu(in_layer2)
-        
-        output = tf.add(tf.matmul(out_layer2, weights['out']), biases['out'])
-        return output    
-
-
-    # In[20]:
-
-
-    x = tf.placeholder("float", [None, n_input])
-    y = tf.placeholder(tf.int32, [None, n_out])
-    pred = forward_propagation(x, weights, biases)
-
-
-    # In[21]:
-
-
-    cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits = pred, labels = y))
-
-
-    # In[22]:
-
-
-    optimizer = tf.train.AdamOptimizer(learning_rate=0.01)
-    optimize = optimizer.minimize(cost)
-
-
-    # In[23]:
-
-
-    sess = tf.Session()
-    sess.run(tf.global_variables_initializer())
-
-
-    # In[24]:
-
-
-    num_itr = 10000
-
-    for i in range(num_itr):
-        c, _ = sess.run([cost, optimize], feed_dict = {x : x_train, y : y_train})
-        print(i, " : ", c)
-        
-        if c <0.5:
-            break
+def build_regressor():
+    regressor = Sequential()
+    regressor.add(Dense(units=256, input_dim=171))
+    regressor.add(Dense(units=256))
+    regressor.add(Dense(units=128))
+    regressor.add(Dense(units=1))
+    adm = keras.optimizers.Adam(learning_rate=0.001, beta_1=0.9, beta_2=0.999, amsgrad=False)
+    regressor.compile(optimizer=adm, loss='mean_squared_error',  metrics=['mse','accuracy'])
+    return regressor
+
+
+@login_required
+def yieldPred(request):
+    if request.method == 'POST':
+        form = YieldForm(request.POST)
+        if form.is_valid():
+            Crop = form.cleaned_data.get('Crop')
+            Location = form.cleaned_data.get('Location')
+            crop_detail = getCropDataPoint(Location,Crop)
+            Input = [crop_detail,]
             
+            regressor = GetModel(Crop)
+            regressor.predict(Input)
+            Context = {"Predictions" : pred}
+
+            return render(request,'services/yieldResult.html',Context)
+
+    form = YieldForm()
+    return render(request, 'services/yieldPred.html', {'form':form})
 
 
-    # In[25]:
 
-
-    saver = tf.train.Saver()
-    path_saved = saver.save(sess, r"C:\Users\Sparsh Jain\Desktop\Temp\weights.ckpt")
-
-
-    # In[26]:
-
-
-    path_saved
-
-
-    # In[27]:
-
-
-    x_test = scaler.transform(x_test)
-
-
-    # In[34]:
-
-
-    predictions = tf.argmax(pred, 1)
-    correct_labels = tf.argmax(y, 1)
-    correct_predictions = tf.equal(predictions, correct_labels)
-    predictions_eval, correct_predictions = sess.run([predictions, correct_predictions], 
-                                                      feed_dict = {x : x_test, y : y_test})
-    return predictions_eval
 
 @login_required
 def CropRecommender(request):
@@ -413,3 +241,33 @@ def createDataset(commonPath):
 def predNN(Input):
     LoadModelNB1 = joblib.load('D:\\Projects\\Captone 13 oct\\FarmAlert\\services\\NBCapstone.pkl')
     return LoadModelNB1.predict(Input)
+
+
+
+
+def GetModel(Crop):
+    Crop = Crop.title()
+    data = pd.read_csv(r'C:\\Users\\hp\\Downloads\\' + Crop +'.csv')
+    random.seed(0)
+
+    rowDict = {"Barley":216,"Rice":171,"Wheat":216,"Sugarcane":486,"Maize":171}
+
+    X = data.iloc[:,:rowDict[Crop]]
+    Y = data.iloc[:,rowDict[Crop]]
+    X_train,X_test,Y_train,Y_test = train_test_split(X,Y,test_size = 0.2)
+
+    def build_regressor():
+        regressor = Sequential()
+        regressor.add(Dense(units=256, input_dim=rowDict[Crop]))
+        regressor.add(Dense(units=256))
+        regressor.add(Dense(units=128))
+        regressor.add(Dense(units=1))
+        adm = keras.optimizers.Adam(learning_rate=0.001, beta_1=0.9, beta_2=0.999, amsgrad=False)
+        regressor.compile(optimizer=adm, loss='mean_squared_error',  metrics=['mse','accuracy'])
+        return regressor
+
+    regressor = KerasRegressor(build_fn=build_regressor,epochs=600)
+
+    regressor.fit(X_train,Y_train)
+    return regressor
+

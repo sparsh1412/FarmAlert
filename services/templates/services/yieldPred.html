@@ -1,0 +1,31 @@
+{% extends "farm/base.html"%}
+{% load crispy_forms_tags %}
+{%block active-tab-service%}
+    <li class="active"><a href="{% url 'farm-services' %}">Services</a></li>
+{%endblock%}
+
+{%block content%}
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+      $('div.hidden').fadeIn(2000).removeClass('hidden');
+  });
+
+  </script>
+
+<div class = "hidden">  
+<div class ="ex1 container" style= " margin-left : 750px; margin-top: 200px; background: rgba(180, 180, 180, 0.8);width: 500px;height: 350px;" >
+    <h1 style="color: rgb(51, 51, 255) ;font-weight: bold; font-size:32px;text-align:center;font-family: 'Bebas Neue';"> Get Yield Predictions</h1>
+   <form method="post" style="align-self: center;">
+            {% csrf_token %}
+           <!--  {{ form.as_p}} -->
+            {{form|crispy}}
+            <br>
+            <button type="submit" style="background-color: rgb(139, 197, 66); margin-left: 200px;">Submit</button>
+   </form> 
+</div>
+</div>
+{%endblock%}

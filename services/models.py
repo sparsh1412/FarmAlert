@@ -7,3 +7,7 @@ class SoilInput(models.Model):
 	Phosphorus = models.FloatField()
 	Pottasium  = models.FloatField()
 	Temprature = models.FloatField()
+
+class YieldInput(models.Model):
+	Crop = models.CharField(max_length = 50)
+	Location = models.CharField(max_length = 50)
