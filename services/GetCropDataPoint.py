@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 district = "patiala"
 crop = "barley"
@@ -92,6 +93,8 @@ def getCropDataPoint(district, crop):
 
         for col in keep_cols:
             crop_data.extend(list(data.iloc[sugarcane_lower_index:sugarcane_upper_index + 1][col]))
+
+    crop_data = np.array(crop_data).reshape(1,-1)
 
     return crop_data
 

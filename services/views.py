@@ -26,19 +26,19 @@ from keras.wrappers.scikit_learn import KerasRegressor
 # Create your views here.
 
 
+def build_regressor():
+        regressor = Sequential()
+        regressor.add(Dense(units=256, input_dim=216))
+        regressor.add(Dense(units=256))
+        regressor.add(Dense(units=128))
+        regressor.add(Dense(units=1))
+        adm = keras.optimizers.Adam(learning_rate=0.005, beta_1=0.9, beta_2=0.999, amsgrad=False)
+        regressor.compile(optimizer=adm, loss='mean_squared_error',  metrics=['mse','accuracy'])
+        return regressor
+
 @login_required
 def serve(request):
     return render(request, 'services/farmServices.html')
-
-def build_regressor():
-    regressor = Sequential()
-    regressor.add(Dense(units=256, input_dim=171))
-    regressor.add(Dense(units=256))
-    regressor.add(Dense(units=128))
-    regressor.add(Dense(units=1))
-    adm = keras.optimizers.Adam(learning_rate=0.001, beta_1=0.9, beta_2=0.999, amsgrad=False)
-    regressor.compile(optimizer=adm, loss='mean_squared_error',  metrics=['mse','accuracy'])
-    return regressor
 
 
 @login_required
@@ -49,13 +49,25 @@ def yieldPred(request):
             Crop = form.cleaned_data.get('Crop')
             Location = form.cleaned_data.get('Location')
             crop_detail = getCropDataPoint(Location,Crop)
-            Input = [crop_detail,]
-            
-            regressor = GetModel(Crop)
-            regressor.predict(Input)
-            Context = {"Predictions" : pred}
+            Input = crop_detail
+            pred = 0
+            model2 = KerasRegressor(build_fn=build_regressor, epochs=10, batch_size=10, verbose=1)
 
-            return render(request,'services/yieldResult.html',Context)
+            if Crop == "Barley":
+                model2.model = load_model('D:\\Projects\\Clone 16 Nov Capstone\\FarmAlert\\farm\\static\\Kerasmodels\\Barleymodelkeras.h5')
+            elif Crop == "Wheat":
+                model2.model = load_model('D:\\Projects\\Clone 16 Nov Capstone\\FarmAlert\\farm\\static\\Kerasmodels\\Wheatmodelkeras.h5')
+            elif Crop == "Maize":
+                model2.model = load_model('D:\\Projects\\Clone 16 Nov Capstone\\FarmAlert\\farm\\static\\Kerasmodels\\Maizemodelkeras.h5')
+            elif Crop == "Rice":
+                model2.model = load_model('D:\\Projects\\Clone 16 Nov Capstone\\FarmAlert\\farm\\static\\Kerasmodels\\Ricemodelkeras.h5')
+            else :
+                model2.model = load_model('D:\\Projects\\Clone 16 Nov Capstone\\FarmAlert\\farm\\static\\Kerasmodels\\Sugarcanemodelkeras.h5')
+            
+            pred = model2.predict(Input)
+            pred = pred[0]
+        
+            return render(request,'services/yieldResult.html',{'data':pred})
 
     form = YieldForm()
     return render(request, 'services/yieldPred.html', {'form':form})
@@ -244,30 +256,4 @@ def predNN(Input):
 
 
 
-
-def GetModel(Crop):
-    Crop = Crop.title()
-    data = pd.read_csv(r'C:\\Users\\hp\\Downloads\\' + Crop +'.csv')
-    random.seed(0)
-
-    rowDict = {"Barley":216,"Rice":171,"Wheat":216,"Sugarcane":486,"Maize":171}
-
-    X = data.iloc[:,:rowDict[Crop]]
-    Y = data.iloc[:,rowDict[Crop]]
-    X_train,X_test,Y_train,Y_test = train_test_split(X,Y,test_size = 0.2)
-
-    def build_regressor():
-        regressor = Sequential()
-        regressor.add(Dense(units=256, input_dim=rowDict[Crop]))
-        regressor.add(Dense(units=256))
-        regressor.add(Dense(units=128))
-        regressor.add(Dense(units=1))
-        adm = keras.optimizers.Adam(learning_rate=0.001, beta_1=0.9, beta_2=0.999, amsgrad=False)
-        regressor.compile(optimizer=adm, loss='mean_squared_error',  metrics=['mse','accuracy'])
-        return regressor
-
-    regressor = KerasRegressor(build_fn=build_regressor,epochs=600)
-
-    regressor.fit(X_train,Y_train)
-    return regressor
 
