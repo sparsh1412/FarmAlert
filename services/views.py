@@ -83,8 +83,8 @@ def CropRecommender(request):
             Ph = form.cleaned_data.get('Ph')
             Nitrogen = form.cleaned_data.get('Nitrogen')
             Phosphorus = form.cleaned_data.get('Phosphorus')
-            Pottasium = form.cleaned_data.get('Pottasium')
-            Temprature = form.cleaned_data.get('Temprature')
+            Potassium = form.cleaned_data.get('Potassium')
+            Temperature = form.cleaned_data.get('Temperature')
 
             ClassNames = ["Maize","Sugarcane","Barley","Rice","Wheat","None"]
 
@@ -92,7 +92,7 @@ def CropRecommender(request):
             LoadModelDecisonTree = joblib.load('D:\\Projects\\Captone 13 oct\\FarmAlert\\services\\DTCapstone.pkl')
             LoadModelKNN = joblib.load('D:\\Projects\\Captone 13 oct\\FarmAlert\\services\\KNNCapstone.pkl')
 
-            Input = [[Temprature,Ph,Nitrogen,Phosphorus,Pottasium],]
+            Input = [[Temperature,Ph,Nitrogen,Phosphorus,Potassium],]
 
             PredNB = LoadModelNB.predict(Input)
             PredDT = LoadModelDecisonTree.predict(Input)

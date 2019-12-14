@@ -1,7 +1,7 @@
   
 body
 {
-  background-image: url('/static/images/bg.jpg');
+  background-image: url('/static/images/register_back.png');
   background-repeat:repeat;
 /*  padding-top: 300px;*/
   background-size:100% 100vh;
@@ -11,7 +11,7 @@ div.ex1 {
 background: rgba(0, 0, 0, 0.8);
 width: 950px;
 height: 800px;
-overflow: scroll;
+overflow: hidden;
 margin-top: 100px;
 
 }

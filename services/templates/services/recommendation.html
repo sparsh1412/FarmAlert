@@ -7,67 +7,370 @@
 {%block content%}
 
 
-
+<style>
+  body
+  {
+    background-image: none !important;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+</style>
 
 <script type="text/javascript">
     $(document).ready(function () {
       $('div.hidden').fadeIn(2000).removeClass('hidden');
   });
 
+
+
+    function showDiv(toggle){
+    document.getElementById(toggle).style.display = 'block';
+    }
+
+      window.onload=function()  //executes when the page finishes loading
+    {
+      setTimeout(func1, 0);
+      setTimeout(func2,2000); //sets a timer which calls function func1 after 2,000 milliseconds = 2 secs.
+      setTimeout(func3,4000);
+      setTimeout(func4,6000);
+      setTimeout(func5,8000);
+      setTimeout(func6,10000);
+      setTimeout(func7,12000);
+    };
+    function func1()
+    {
+      document.getElementById("my_div").className="show";
+
+    }
+    function func2()
+    {
+      document.getElementById("my_div2").className = "show hidden";
+       $(document).ready(function () {
+      $('div.hidden').fadeIn(2000).removeClass('hidden');
+  });
+
+    }
+    function func3()
+    {
+      document.getElementById("my_div3").className = "show hidden";
+       $(document).ready(function () {
+      $('div.hidden').fadeIn(2000).removeClass('hidden');
+  });
+    }
+    function func4()
+    {
+      document.getElementById("my_div4").className = "show hidden";
+       $(document).ready(function () {
+      $('div.hidden').fadeIn(2000).removeClass('hidden');
+  });
+
+    }
+    function func5()
+    {
+      document.getElementById("my_div5").className = "show hidden";
+       $(document).ready(function () {
+      $('div.hidden').fadeIn(2000).removeClass('hidden');
+  });
+
+    }
+    function func6()
+    {
+      document.getElementById("my_div6").className = "show hidden";
+       $(document).ready(function () {
+      $('div.hidden').fadeIn(2000).removeClass('hidden');
+  });
+
+    }
+    function func7()
+    {
+      document.getElementById("my_div7").className = "show hidden";
+       $(document).ready(function () {
+      $('div.hidden').fadeIn(2000).removeClass('hidden');
+  });
+
+    }
+
+
+
   </script>
 
-<div class = "hidden">  
+<div class ="row">
+<div class="col-sm-12" style = "margin-top: 150px; margin-left: -300px;">
+  <div id ="my_div" class ="hide" >
+    <div class ="hidden">
+    <div class="col-sm-4">
+        <div class="container">
+            <div class="card" style="width:350px;">
+            <img class="card-img-top" src="/static/images/dataFetch.JPG" alt="Card image" style="width:100%; height: 110%; margin-top: 20px;">
+            <div class="card-body">
+              <h4 class="card-title" style="font-size: 20px;"><b>Data Fetch!</b></h4>
+              <p class="card-text" style="font-family: 'Oswald', sans-serif;font-size: 19px;">Our system has received your soil data, now these values will be fed into our complex machine learning models to give you accurate predictions!</p>
+             
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id ="my_div2" class ="hide" >
+    <div class = "hidden">
+    <div class="col-sm-4">
+        <div class="container">
+            <div class="card" style="width:350px;">
+              <br>
+
+            <img class="card-img-top" src="/static/images/loadingModels.JPG" alt="Card image" style="width:110%; height: 110%">
+            <br>
+            <br>
+            <br>
+            
+            <div class="card-body">
+              <h4 class="card-title" style="font-size: 20px;"><b>Loading Machine Learning Models!</b></h4>
+              <p class="card-text" style = "font-family: 'Oswald', sans-serif;font-size: 19px;">Loading the pre-trained models each model will individually give out their predictions based on the input data!</p>
+             
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+  <div id ="my_div3" class = "hide">
+    <div class = "hidden">
+    <div class="col-sm-4">
+        <div class="container">
+            <div class="card" style="width:350px;">
+            <img class="card-img-top" src="/static/images/decisionTree.JPG" alt="Card image" style="width:110%; height: 80%;margin-bottom: 10px;">
+            <br>
+            <div class="card-body">
+              <h4 class="card-title" style="font-size: 20px;"><b>Decision Tree Preidictions!</b></h4>
+              <p class="card-text" style = "font-family: 'Oswald', sans-serif;font-size: 19px;">Decision Tree has an accuracy of 97.4% on the testing data. The splitting criterion is entropy and the tree has a maximum depth of 3</p>
+             
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+   
+  </div>
+</div>
+
+
+<div class = "row">
+<div class="col-sm-12" style = "margin-top: 150px; margin-left: -300px;">
+  <div id ="my_div4" class ="hide" >
+    <div class ="hidden">
+    <div class="col-sm-4">
+        <div class="container">
+            <div class="card" style="width:350px;">
+            <img class="card-img-top" src="/static/images/knn.JPG" alt="Card image" style="width:90%; height: 98%; margin-top: 20px;">
+            <div class="card-body">
+              <h4 class="card-title" style="font-size: 20px;"><b>KNN!</b></h4>
+              <p class="card-text" style="font-family: 'Oswald', sans-serif;font-size: 19px;">KNN has an accuracy of 96.7% on the testing data. We have used number of neighbors as 5, we now have the prediction from KNN!</p>
+             
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id ="my_div5" class ="hide" >
+    <div class = "hidden">
+    <div class="col-sm-4">
+        <div class="container">
+            <div class="card" style="width:350px;">
+              <br>
+
+            <img class="card-img-top" src="/static/images/neuralNetwork.JPG" alt="Card image" style="width:110%; height: 110%;margin-top: 30px;">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            
+
+            <div class="card-body">
+              <h4 class="card-title" style="font-size: 20px;"><b>Neural Networks!</b></h4>
+              <p class="card-text" style = "font-family: 'Oswald', sans-serif;font-size: 19px;">ANN has an accuracy of 98.5% We have 5 units in the input layer, 32 units in hidden layer 1, 64 units in hidden layer 2 and 5 units in the output layer.</p>
+             
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+  <div id ="my_div6" class = "hide">
+    <div class = "hidden">
+    <div class="col-sm-4">
+        <div class="container">
+            <div class="card" style="width:350px;">
+              <br>
+            <img class="card-img-top" src="/static/images/naiveBayes.JPG" alt="Card image" style="width:110%; height: 80%;margin-bottom: 10px;">
+            <br>
+            <div class="card-body">
+              <h4 class="card-title" style="font-size: 20px;"><b>Naive Bayes!</b></h4>
+              <p class="card-text" style = "font-family: 'Oswald', sans-serif;font-size: 19px;">Naive Bayes has an accuracy of 96.2% on the testing data. We have used the gaussian naive bayes.</p>
+             
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+   
+  </div>
+</div>
+
+<br>
+<br>
+<br>
+
+<div class = "row">
+  <div id = "my_div7" class ="hide">
+    <div class ="hidden">
+  <div class = "col-sm-4" style="margin-left: 355px;">
   <div class = "container">
-    <div class ="ex1 container" style= " margin-left : 100px; margin-top: 140px; background: rgba(180, 180, 180, 0.8);width:900px;height: 800px;" >
-    <h1 style="color: rgb(51, 51, 255) ;font-weight: bold; font-size:30px;text-align:center;font-family: 'Special Elite', cursive;margin-top: 50px;">
-      The Recommended Crop for your soil is <i style="color: rgb(255,0,0) ; font-size:30px;text-align:center;font-family: 'Roboto', cursive;">{{Result}}</i></h1>
+   <div class="card" style="width:350px;">
+              <br>
+            <img class="card-img-top" src="/static/images/majorityVoting.JPG" alt="Card image" style="width:100%; height: 100%;margin-bottom: 10px;margin-left: 8px;">
+            <br>
+            <div class="card-body">
+              <h4 class="card-title" style="font-size: 22px;"><b>Final Prediction!</b></h4>
+              <p class="card-text" style = "font-family: 'Oswald', sans-serif;font-size: 21px;">After receiving predictions from all the four models, we have a majority voting algorithm that will give out the most suitable crop given your soil conditions!</p>
+             
+            </div>
+          </div>
+        </div>
+        </div>
+</div>
+</div>
 
+</div>
+
+<div class = "hidden">  
+  <div class = "container" style="padding-bottom: 150px;">
+
+    <br>
+    <br>
+
+   
+      <button type="submit" class = "btn btn-default btn-lg"onclick = "showDiv('toggle')"style="background-color: rgb(139, 197, 66);text-align: center;margin-left: 450px;">View Prediction!!</button>
+      <div id="toggle" style="display:none;">
+        <br>
+        <br>
+    <h1 style="color: rgb(51, 51, 255) ;font-weight: bold;text-align:center;font-family: 'Oswald', sans-serif;font-size: 32px;margin-top: 50px;">
+      Your soil is suitable for <i style="color: rgb(255,0,0) ;text-align:center;font-family: 'Oswald', sans-serif;font-size: 32px;margin-right: 80px;">{{Result}}</i></h1>
+
+      <br>
+      <br>
+      
+      <br>
+      
      {% if Result == "Rice" %}
-      <img class="center" src="/static/images/rice.jpg" style="width:80%;margin-left: 90px;margin-top: 40px;">
-          <br>
-          <br>
-          <br>
-          <p style="font-family: 'Patua+One',cursive;font-size:20px;">Rice is the most important food crop of India covering about one-fourth of the total cropped area and providing food to about half of the Indian population. Punjab has made tremendous progress in rice productivity and production during the past 45 years. Due to use of high yielding varieties and new technology Punjab has given the title of Rice Bowl of India.</p>
-
-
+     
+     <div class = "col-sm-4" style="margin-right: 80px;text-align: center;">
+  <div class = "container" style="margin-right: 80px;text-align: center;">
+   <div class="card" style="width:350px;">
+              <br>
+            <img class="card-img-top" src="/static/images/ricePic.JPG" alt="Card image" style="width:130%; height: 130%;margin-left: -140px;margin-top: -50px;">
+            <br>
+            <div class="card-body">
+              
+              <p class="card-text" style = "font-family: 'Oswald', sans-serif;font-size: 21px;margin-left:-120px;">
+               Rice is the most important food crop of India covering about one-fourth of the total cropped area and providing food to about half of the Indian population. Punjab has made tremendous progress in rice productivity and production during the past 45 years. Due to use of high yielding varieties and new technology Punjab has given the title of Rice Bowl of India.
+              </p>
+        
+            </div>
+          </div>
+        </div>
+        </div>
+          
 
       {% elif Result == "Wheat" %}
 
-      <img class="center" src="/static/images/Wheat.jpg" style="width:60%;margin-left: 150px;margin-top: 40px;">
-          <br>
-          <br>
-          <br>
-          <p style="font-family: 'Patua+One';font-size:22px;">Wheat is grown on 13 percent of the cropped area of India. Next to rice, wheat is the most important food-grain of India and is the staple food of millions of Indians, particularly in the northern and north-western parts of the country. </p>
-
+     <div class = "col-sm-4" style="margin-right: 80px;text-align: center;">
+  <div class = "container" style="margin-right: 80px;text-align: center;">
+   <div class="card" style="width:350px;">
+              <br>
+            <img class="card-img-top" src="/static/images/wheatPic.JPG" alt="Card image" style="width:130%; height: 130%;margin-left: -140px;margin-top: -50px;">
+            <br>
+            <div class="card-body">
+              
+              <p class="card-text" style = "font-family: 'Oswald', sans-serif;font-size: 21px;margin-left:-120px;">
+                Wheat is grown on 13 percent of the cropped area of India. Next to rice, wheat is the most important food-grain of India and is the staple food of millions of Indians, particularly in the northern and north-western parts of the country. 
+              </p>
+        
+            </div>
+          </div>
+        </div>
+        </div>
+      
+          
       {% elif Result == "Barley" %}
 
-       <img class="center" src="/static/images/Barley.jpg" style="width:60%;margin-left: 150px;margin-top: 40px;">
-          <br>
-          <br>
-          <br>
-          <p style="font-family: 'Patua+One';font-size:22px;">Barley (Hordeum vulgare L.) is generally called “Jau”. It is quite significant cereal after wheat, maize & rice. Barley is cultivated in summer season in temperate area while it is sown in winter seasons in tropical zones. In India it is planted in rabi season. It possesses excellent drought resistance capacity.</p>
-
+       <div class = "col-sm-4" style="margin-right: 80px;text-align: center;">
+  <div class = "container" style="margin-right: 80px;text-align: center;">
+   <div class="card" style="width:350px;">
+              <br>
+            <img class="card-img-top" src="/static/images/barleyPic.JPG" alt="Card image" style="width:130%; height: 130%;margin-left: -140px;margin-top: -50px;">
+            <br>
+            <div class="card-body">
+              
+              <p class="card-text" style = "font-family: 'Oswald', sans-serif;font-size: 21px;margin-left:-120px;">
+                Barley (Hordeum vulgare L.) is generally called “Jau”. It is quite significant cereal after wheat, maize & rice. Barley is cultivated in summer season in temperate area while it is sown in winter seasons in tropical zones. In India it is planted in rabi season. It possesses excellent drought resistance capacity.
+              </p>
+        
+            </div>
+          </div>
+        </div>
+        </div>
+      
+          
       {% elif Result == "Maize" %}
 
-        <img class="center" src="/static/images/Maize.jpg" style="width:60%;margin-left: 150px;margin-top: 40px;">
-          <br>
-          <br>
-          <br>
-           
-          <p style="font-family: 'Patua+One';font-size:22px;">
-             Maize can play important role in crop diversification policy of the state. It is used in poultry and animal feed and for the manufacture of starch, glucose, corn flakes. It is also used as a human food (Makki di roti) in winter season as a special delicious recipe in combination with Sarson ka-sag. Baby corn is eaten as Salad and used for cooking vegetables and preparing pickles, pakoras, soups, etc
-          </p>
+        <div class = "col-sm-4" style="margin-right: 80px;text-align: center;">
+  <div class = "container" style="margin-right: 80px;text-align: center;">
+   <div class="card" style="width:350px;">
+              <br>
+            <img class="card-img-top" src="/static/images/maizePic.JPG" alt="Card image" style="width:130%; height: 130%;margin-left: -140px;margin-top: -50px;">
+            <br>
+            <div class="card-body">
+              
+              <p class="card-text" style = "font-family: 'Oswald', sans-serif;font-size: 21px;margin-left:-120px;">
+                Maize can play important role in crop diversification policy of the state. It is used in poultry and animal feed and for the manufacture of starch, glucose, corn flakes. It is also used as a human food (Makki di roti) in winter season as a special delicious recipe in combination with Sarson ka-sag. Baby corn is eaten as Salad and used for cooking vegetables and preparing pickles, pakoras, soups, etc
+              </p>
+        
+            </div>
+          </div>
+        </div>
+        </div>
 
       {% elif Result == "None"%}
 
-         <img class="center" src="/static/images/NoResult.jpg" style="width:60%;margin-left: 150px;margin-top: 40px;height: 350px">
-          <br>
-          <br>
-          <br>
-           
-          <p style="font-family: 'Patua+One';font-size:22px;">
-           The soil is not suitable for growth of the listed crops
-          </p>
+        <div class = "col-sm-4" style="margin-right: 80px;text-align: center;">
+  <div class = "container" style="margin-right: 80px;text-align: center;">
+   <div class="card" style="width:350px;">
+              <br>
+            <img class="card-img-top" src="/static/images/oopsPics.JPG" alt="Card image" style="width:130%; height: 130%;margin-left: -140px;margin-top: -50px;">
+            <br>
+            <div class="card-body">
+              
+              <p class="card-text" style = "font-family: 'Oswald', sans-serif;font-size: 21px;margin-left:-120px;">After receiving predictions from all the four models,Our model finds that there are no suitable crops given the current soil conditions!</p>
+        
+            </div>
+          </div>
+        </div>
+        </div>
 
       {%else%}
 
@@ -81,16 +384,19 @@
 
 
 
-
-  </div>
+</div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+    <!-- <input type="button" name="answer" onclick="showDiv('toggle')">Show</input> -->
+    
+    
 </div>
 </div>
 {%endblock%}
 
 
 
-<img class="center" src="/static/images/rice.jpg" style="width:70%;margin-left: 100px;margin-top: 40px;">
-          <br>
-          <br>
-          <br>
-          <p style="font-family: 'Patua+One';font-size:24px;">Dict[key]</p>
+<
