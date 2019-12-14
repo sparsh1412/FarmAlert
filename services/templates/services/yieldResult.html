@@ -6,7 +6,263 @@
 
 {%block content%}
 
-<style type="text/css">
+
+
+
+<style>
+  body
+  {
+    background-image: none !important;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+      $('div.hidden').fadeIn(2000).removeClass('hidden');
+  });
+
+
+
+    function showDiv(toggle){
+    document.getElementById(toggle).style.display = 'block';
+    }
+
+      window.onload=function()  //executes when the page finishes loading
+    {
+      setTimeout(func1, 0);
+      setTimeout(func2,2000); //sets a timer which calls function func1 after 2,000 milliseconds = 2 secs.
+      setTimeout(func3,4000);
+      setTimeout(func4,6000);
+      setTimeout(func5,8000);
+      setTimeout(func6,10000);
+      setTimeout(func7,12000);
+    };
+    function func1()
+    {
+      document.getElementById("my_div").className="show";
+
+    }
+    function func2()
+    {
+      document.getElementById("my_div2").className = "show hidden";
+       $(document).ready(function () {
+      $('div.hidden').fadeIn(2000).removeClass('hidden');
+  });
+
+    }
+    function func3()
+    {
+      document.getElementById("my_div3").className = "show hidden";
+       $(document).ready(function () {
+      $('div.hidden').fadeIn(2000).removeClass('hidden');
+  });
+    }
+    function func4()
+    {
+      document.getElementById("my_div4").className = "show hidden";
+       $(document).ready(function () {
+      $('div.hidden').fadeIn(2000).removeClass('hidden');
+  });
+
+    }
+    function func5()
+    {
+      document.getElementById("my_div5").className = "show hidden";
+       $(document).ready(function () {
+      $('div.hidden').fadeIn(2000).removeClass('hidden');
+  });
+
+    }
+    function func6()
+    {
+      document.getElementById("my_div6").className = "show hidden";
+       $(document).ready(function () {
+      $('div.hidden').fadeIn(2000).removeClass('hidden');
+  });
+
+    }
+    function func7()
+    {
+      document.getElementById("my_div7").className = "show hidden";
+       $(document).ready(function () {
+      $('div.hidden').fadeIn(2000).removeClass('hidden');
+  });
+
+    }
+
+
+
+  </script>
+
+
+<div class ="row">
+<div class="col-sm-12" style = "margin-top: 150px; margin-left: 80px;">
+  <div id ="my_div" class ="hide" >
+    <div class ="hidden">
+    <div class="col-sm-6">
+        <div class="container">
+            <div class="card" style="width:350px;">
+            <img class="card-img-top" src="/static/images/locationYield.JPG" alt="Card image" style="width:100%; height: 110%; margin-top: 20px;">
+            <br>
+            <br>
+            <br>
+            <div class="card-body">
+              <h4 class="card-title" style="font-size: 22px;"><b>Data Fetched!</b></h4>
+              <p class="card-text" style="font-family: 'Oswald', sans-serif;font-size: 22px;">We require the name of the crop you wish to know the yield for and the district of your farm in order to predict the yield.</p>
+             
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id ="my_div2" class ="hide" >
+    <div class = "hidden">
+    <div class="col-sm-6">
+        <div class="container-fluid">
+            <div class="card" style="width:350px;">
+              
+
+            <img class="card-img-top" src="/static/images/forecastYield.JPG" alt="Card image" style="width:110%; height: 80%;margin-bottom: 25px;">
+           <br>
+           <br>
+
+            
+            <div class="card-body">
+              <h4 class="card-title" style="font-size: 22px;"><b>Fetching Forecast!</b></h4>
+              <p class="card-text" style = "font-family: 'Oswald', sans-serif;font-size: 22px;">Based on the location and the crop we are fetching the weather forecast data.The data is fetched for the provided crop's season.</p>
+             
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+  
+   
+  </div>
+</div>
+
+<div class ="row">
+<div class="col-sm-12" style = "margin-top: 150px; margin-left: 80px;">
+  <div id ="my_div3" class ="hide" >
+    <div class ="hidden">
+    <div class="col-sm-6">
+        <div class="container">
+            <div class="card" style="width:350px;">
+            <img class="card-img-top" src="/static/images/datapointYield.JPG" alt="Card image" style="width:100%; height: 110%; margin-top: 20px;">
+            <br>
+            <br>
+            <br>
+            <div class="card-body">
+              <h4 class="card-title" style="font-size: 22px;"><b>Data point for prediction!</b></h4>
+              <p class="card-text" style="font-family: 'Oswald', sans-serif;font-size: 22px;">
+                Now that we have fetched the data we need to create a datapoint in the format that will be a suitable input for our Neural Network.
+              </p>
+             
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id ="my_div4" class ="hide" >
+    <div class = "hidden">
+    <div class="col-sm-6">
+        <div class="container-fluid">
+            <div class="card" style="width:350px;">
+              
+
+            <img class="card-img-top" src="/static/images/predictionYield.JPG" alt="Card image" style="width:110%; height: 80%;margin-bottom: 25px;">
+           <br>
+           <br>
+
+            
+            <div class="card-body">
+              <h4 class="card-title" style="font-size: 22px;"><b>Predicting your harvest!</b></h4>
+              <p class="card-text" style = "font-family: 'Oswald', sans-serif;font-size: 22px;">Now the Neural Network is calculating the expected yield at the time of harvest, This yield will be shown shortly...</p>
+             
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+  
+   
+  </div>
+</div>
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<div class = "row">
+  <div id = "my_div5" class ="hide">
+    <div class ="hidden">
+  <div class = "col-sm-4" style="margin-left: 355px;">
+  <div class = "container">
+   <div class="card" style="width:350px;">
+              <br>
+            <img class="card-img-top" src="/static/images/harvestYield.JPG" alt="Card image" style="width:140%; height: 140%;margin-bottom: 10px;margin-left: -35px;">
+            <br>
+           <!--  <div class="card-body">
+              <h4 class="card-title" style="font-size: 22px;"><b>Find out your predicted harvest!</b></h4>
+              <p class="card-text" style = "font-family: 'Oswald', sans-serif;font-size: 21px;">After receiving predictions from all the four models, we have a majority voting algorithm that will give out the most suitable crop given your soil conditions!</p>
+             
+            </div> -->
+          </div>
+        </div>
+        </div>
+</div>
+</div>
+
+</div>
+
+<div class = "hidden">  
+  <div class = "container" style="padding-bottom: 150px;">
+
+    <br>
+    <br>
+
+   
+      <button type="submit" class = "btn btn-default btn-lg"onclick = "showDiv('toggle')"style="background-color: rgb(139, 197, 66);text-align: center;margin-left: 460px;">Show My Harvest!</button>
+      <div id="toggle" style="display:none;">
+        <br>
+        <br>
+    <h1 style="color: rgb(51, 51, 255) ;font-weight: bold;text-align:center;font-family: 'Oswald', sans-serif;font-size: 32px;margin-top: 50px;">
+      Your predicted harvest at end of season is <i style="color: rgb(255,0,0) ;text-align:center;font-family: 'Oswald', sans-serif;font-size: 32px;margin-right: 80px;">{{data}} tonne/hectare!</i></h1>
+
+</div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+    <!-- <input type="button" name="answer" onclick="showDiv('toggle')">Show</input> -->
+    
+    
+</div>
+</div>
+{%endblock%}
+
+
+
+
+<!-- style type="text/css">
   
 </style>
 
@@ -17,8 +273,8 @@
   });
 
   </script>
-
-<div class = "hidden">  
+ -->
+<!-- <div class = "hidden">  
   <div class = "container">
     <div class ="ex1 container" style= " margin-left : 170px; margin-top: 160px; width:800px;height: 600px;overflow: hidden;" >
     <h1 style="color: orange ;font-weight: bold; font-size:30px;text-align:center;font-family: 'Special Elite', cursive;margin-top: 50px;">
@@ -32,8 +288,8 @@
 
   </div>
 </div>
-</div>
-{%endblock%}
+</div> -->
+
 
 
 
