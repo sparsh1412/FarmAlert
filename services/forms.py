@@ -10,5 +10,5 @@ class SoilForm(ModelForm):
 class YieldForm(ModelForm):
 	class Meta:
 		model = YieldInput
-		fields = "__all__"
+		fields = ['Crop','Location']
 		
